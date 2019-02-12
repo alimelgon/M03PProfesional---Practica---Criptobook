@@ -4,11 +4,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>{% block title %}{% endblock %}</title>
+        <style>
+            body {
+                font-family: sans-serif;
+            }
+
+            form.compra {
+                border: 1px solid black;
+                padding: 16px;
+            }
+
+            form.compra input, form.compra select {
+                width:120px;
+                margin: 10px;
+            }
+
+            span.label {
+                width: 105px;
+                display: inline-block;
+            }
+            </style>
     </head>
     <body>
-        <p><a href="./">Inicio</a> | <a href="./nuevacompra">Compra Divisas</a></p>
+        <p class="menu portada"><a href="./">Inicio</a> | <a href="./nuevacompra">Compra Divisas</a></p>
         {% block body%}
         {% endblock %}
-        <p>Criptobook &copy;2019</p>
+        <p class="pie">Criptobook &copy;2019</p>
     </body>
 </html>

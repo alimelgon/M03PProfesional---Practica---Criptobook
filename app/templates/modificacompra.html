@@ -4,6 +4,7 @@
 <h1>Modifica registro</h1>
     <p>Modifique los datos de la compra</p>
     <form action="modificacompra" method="post">
+        <input hidden type="number" name="registroseleccionado" value="{{ registro['registroseleccionado']}}">
         Fecha: <input type="date" name="fecha" id="fecha" value="{{ registro['fecha'] }}"><br/>
         Hora: <input type="time" name="hora" id="hora" value="{{ registro['hora'] }}"><br/>
         Concepto: <input type="text" name="descripcion" id="descripcion"  value="{{ registro['descripcion'] }}"><br/>

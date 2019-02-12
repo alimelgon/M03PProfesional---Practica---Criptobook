@@ -1,0 +1,18 @@
+body {
+    font-family: sans-serif;
+}
+
+form.compra {
+    border: 1px solid black;
+    padding: 16px;
+}
+
+form.compra input, form.compra select {
+    width:120px;
+    margin: 10px;
+}
+
+span.label {
+    width: 105px;
+    display: inline-block;
+}
