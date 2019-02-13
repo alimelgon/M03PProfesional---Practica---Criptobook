@@ -1,2 +1,2 @@
 # Cambiar a False en producción
-DEBUG = True
+DEBUG = False
