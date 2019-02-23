@@ -5,6 +5,7 @@ import os
 
 ficherotransacciones = "data/transacciones.dat"
 nuevoficherotransacciones = 'data/newtransacciones.dat'
+
 fields = ['fecha', 'hora', 'descripcion', 'monedaComprada', 'cantidadComprada', 'monedaPagada', 'cantidadPagada']
 
 def makeDict(lista):
@@ -44,19 +45,47 @@ def nuevacompra():
     if request.method == 'GET':
         if len(request.values) == 0 or request.values.get('btnselected') == 'Nueva':
             return render_template('nuevacompra.html')
+        elif request.values.get('btnselected')=='Borrar':
+            if request.values.get('ix')!=None:
+                registroseleccionado=int(request.values.get('ix'))
+                transacciones = open(ficherotransacciones, 'r')
+                newtransacciones = open(nuevoficherotransacciones, 'w+')    
+                registroseleccionado = int(request.values.get('ix'))
+
+                archivo = transacciones.readlines()
+                transacciones.seek(0)
+                numreg=0
+                for linea in archivo:
+                    if numreg != registroseleccionado:
+                        newtransacciones.write(linea)
+                    numreg += 1
+                   
+                transacciones.close()
+                newtransacciones.close()
+                os.remove(ficherotransacciones)
+                os.rename(nuevoficherotransacciones, ficherotransacciones)
+
+                return redirect(url_for('index'))
+
+            else:
+                return redirect(url_for('index'))
+
         else:
             if request.values.get('ix') != None:
                 registroseleccionado = int(request.values.get('ix'))
                 transacciones = open(ficherotransacciones, 'r')
                 csvreader = csv.reader(transacciones, delimiter=',', quotechar='"' )
+                
                 for numreg, registro in enumerate(csvreader):
                     if numreg == registroseleccionado:
                         camposdict = makeDict(registro)
                         camposdict['registroseleccionado'] = registroseleccionado
                         return render_template('modificacompra.html', registro=camposdict)
                 return 'Movimiento no encontrado'
+                
             else:
                 return redirect(url_for('index'))
+
     else:
         datos = request.form
         transacciones = open(ficherotransacciones, "a+")
@@ -68,21 +97,7 @@ def nuevacompra():
 
 @app.route('/modificacompra', methods=['POST'])
 def modificacompra():
-    '''
-        1. - Recuperar los datos del formulario de request - check
-        2. - Recuperar el registro al que corresponden - check
-            2.1. Abrir fichero en formato lectura -check
-            2.2 Crear fichero nuevo en formato escritura - check
-            2.3 Copiar todos los registros hasta el encontrado en nuevo fichero - check
-        3. - Modificar ese registro
-            3.1 - Sustituir el registro a modificar por los datos del formulario
-            3.4 - Grabar en fichero nuevo
-            3.5 - Grabar en fichero nuevo el resto de registros - check
-            3.6 - Borrar fichero antiguo
-            3.7 - renombrar fichero nuevo
-
-        4. - Devolver una página que diga que todo OK
-    '''
+    
     transacciones = open(ficherotransacciones, 'r')
     newtransacciones = open(nuevoficherotransacciones, 'w+')
     
